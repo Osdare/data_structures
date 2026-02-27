@@ -5,15 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct {
-  void *items;
-  size_t item_size;
-  size_t count;
-  size_t capacity;
-} dynarray_t;
-
-
-
 // Min amount of items
 #define DA_MIN_SIZE 128
 
@@ -23,6 +14,14 @@ typedef struct {
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+typedef struct {
+  void *items;
+  size_t item_size;
+  size_t count;
+  size_t capacity;
+} dynarray_t;
+
 extern void da_init(dynarray_t *da, size_t elem_size);
 extern void da_free(dynarray_t *da);
 extern void da_append(dynarray_t *da, const void *item);
@@ -36,8 +35,10 @@ extern void da_set(dynarray_t *da, size_t idx, const void *item);
 }
 #endif
 
+#endif // DS_DYNAMIC_ARRAY_H
+
 // Implementations
-//#define DYNAMIC_ARRAY_IMPLEMENTATION
+// #define DYNAMIC_ARRAY_IMPLEMENTATION
 #ifdef DYNAMIC_ARRAY_IMPLEMENTATION
 
 void da_init(dynarray_t *da, size_t item_size) {
@@ -147,5 +148,3 @@ void da_set(dynarray_t *da, size_t idx, const void *item) {
 }
 
 #endif // DYNAMIC_ARRAY_IMPLEMENTATION
-
-#endif // DYNAMIC_ARRAY_H
