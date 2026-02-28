@@ -5,39 +5,52 @@
 #include <stdlib.h>
 #include <string.h>
 
+// ----Macros----
+// Dynamic array macros start
+//
+//
+//
+
 // Min amount of items
 #define DA_MIN_SIZE 128
 
-// Macros
-#define DA_GET(da, type, idx) (*(type *)da_get(da, idx))
-#define DA_POP(da, type) (*(type *)da_pop(da))
 
-#define DA_DECLARE(type, name)                                                 \
+#define DA_DECLARE(type)                                                       \
   typedef struct {                                                             \
     dynarray_t base;                                                           \
-  } name;                                                                      \
+  } type##_da;                                                                 \
                                                                                \
-  static inline void name##_init(name *da) {                                   \
+  static inline void type##_da_init(type##_da *da) {                           \
     da_init(&da->base, sizeof(type));                                          \
   }                                                                            \
                                                                                \
-  static inline void name##_free(name *da) { da_free(&da->base); }             \
+  static inline void type##_da_free(type##_da *da) { da_free(&da->base); }     \
                                                                                \
-  static inline void name##_append(name *da, type value) {                     \
+  static inline void type##_da_append(type##_da *da, type value) {             \
     da_append(&da->base, &value);                                              \
   }                                                                            \
                                                                                \
-  static inline type name##_get(name *da, size_t i) {                          \
+  static inline type type##_da_get(type##_da *da, size_t i) {                  \
     return *(type *)da_get(&da->base, i);                                      \
   }                                                                            \
                                                                                \
-  static inline void name##_set(name *da, size_t i, type v) {                  \
+  static inline void type##_da_set(type##_da *da, size_t i, type v) {          \
     da_set(&da->base, i, &v);                                                  \
   }
+
+// Dynamic array macros end
+//
+//
+//
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+// Dynamic array declarations start
+//
+//
+//
 
 typedef struct {
   void *items;
@@ -55,6 +68,12 @@ extern void *da_pop(dynarray_t *da);
 extern void da_swap_and_pop(dynarray_t *da, size_t idx);
 extern void *da_get(dynarray_t *da, size_t idx);
 extern void da_set(dynarray_t *da, size_t idx, const void *item);
+
+// Dynamic array declarations end
+//
+//
+//
+
 #ifdef __cplusplus
 }
 #endif
