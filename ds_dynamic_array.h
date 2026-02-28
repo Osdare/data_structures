@@ -8,8 +8,32 @@
 // Min amount of items
 #define DA_MIN_SIZE 128
 
+// Macros
 #define DA_GET(da, type, idx) (*(type *)da_get(da, idx))
 #define DA_POP(da, type) (*(type *)da_pop(da))
+
+#define DA_DECLARE(type, name)                                                 \
+  typedef struct {                                                             \
+    dynarray_t base;                                                           \
+  } name;                                                                      \
+                                                                               \
+  static inline void name##_init(name *da) {                                   \
+    da_init(&da->base, sizeof(type));                                          \
+  }                                                                            \
+                                                                               \
+  static inline void name##_free(name *da) { da_free(&da->base); }             \
+                                                                               \
+  static inline void name##_append(name *da, type value) {                     \
+    da_append(&da->base, &value);                                              \
+  }                                                                            \
+                                                                               \
+  static inline type name##_get(name *da, size_t i) {                          \
+    return *(type *)da_get(&da->base, i);                                      \
+  }                                                                            \
+                                                                               \
+  static inline void name##_set(name *da, size_t i, type v) {                  \
+    da_set(&da->base, i, &v);                                                  \
+  }
 
 #ifdef __cplusplus
 extern "C" {
